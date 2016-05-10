@@ -40,6 +40,15 @@ app.set('port', (process.env.PORT));
 // botkit (apres port)
 require('./bot/karabot');
 
+// DATABASE ===================================================
+// var pg = require('pg');
+// var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/karabot';
+
+// var client = new pg.Client(connectionString);
+// client.connect();
+// var query = client.query('CREATE TABLE users(user_id SERIAL PRIMARY KEY, username VARCHAR(40) not null, slack_user_id VARCHAR(40) not null, email VARCHAR(40) not null, is_bot BOOLEAN)');
+// query.on('end', function() { client.end(); });
+
 // START ===================================================
 http.listen(app.get('port'), function () {
   console.log('listening on port ' + app.get('port'));
