@@ -3,33 +3,9 @@ var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/ka
 
 var client = new pg.Client(connectionString);
 client.connect();
-var query = client.query('CREATE TABLE users(user_id SERIAL PRIMARY KEY, username VARCHAR(40) not null, slack_user_id VARCHAR(40) not null, email VARCHAR(40) not null, is_bot BOOLEAN)');
+
+client.query('CREATE TABLE IF NOT EXISTS channels(channel_id SERIAL PRIMARY KEY, channel_name VARCHAR(40) not null, slack_channel_id VARCHAR(40) not null)');
+client.query('CREATE TABLE IF NOT EXISTS users(user_id SERIAL PRIMARY KEY, username VARCHAR(40) not null, slack_user_id VARCHAR(40) not null, firstname VARCHAR(40), lastname VARCHAR(40), email VARCHAR(40), is_bot BOOLEAN)');
+client.query('CREATE TABLE IF NOT EXISTS messages(message_id SERIAL PRIMARY KEY, message_text TEXT, slack_ts VARCHAR(40), channel VARCHAR(40) not null, slack_user_id VARCHAR(40) not null, channel_id VARCHAR(40) not null)')
+var query = client.query('CREATE TABLE IF NOT EXISTS channel_user(join_id SERIAL PRIMARY KEY, slack_user_id VARCHAR(40) not null, channel_id VARCHAR(40) not null)')
 query.on('end', function() { client.end(); });
-
-// pg.connect(connectionString, function(err, client, done) {
-//   // Handle connection errors
-//   if(err) {
-//     done();
-//     console.log(err);
-//     return res.status(500).json({ success: false, data: err});
-//   }
-
-//   // SQL Query > Insert Data
-//   client.query("INSERT INTO items(text, complete) values($1, $2)", [data.text, data.complete]);
-
-//   // SQL Query > Select Data
-//   var query = client.query("SELECT * FROM items ORDER BY id ASC");
-
-//   // Stream results back one row at a time
-//   query.on('row', function(row) {
-//       results.push(row);
-//   });
-
-//   // After all data is returned, close connection and return results
-//   query.on('end', function() {
-//       done();
-//       return res.json(results);
-//   });
-
-
-// });
