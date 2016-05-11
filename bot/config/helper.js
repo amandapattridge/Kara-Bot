@@ -17,7 +17,21 @@ function sendHook(url, json) {
   );
 }
 
+function postToDatabase(url, json) {
+  request(
+    {
+      url: url,
+      method: 'POST',
+      json: json
+    },
+    function sendDatabaseResponse(err, httpResponse, body) {
+      console.log(body);
+    }
+  );
+}
+
 module.exports = {
   hyperLink: hyperLink,
-  sendHook: sendHook
+  sendHook: sendHook,
+  postToDatabase: postToDatabase
 };

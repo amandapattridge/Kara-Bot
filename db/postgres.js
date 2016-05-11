@@ -82,6 +82,37 @@ function getCurrentData(cb, newData, table, property) {
   });
 }
 
+
+exports.getTableData = function getTableData(table) {
+  var currentData = [];
+  // Get a Postgres client from the connection pool
+  // get connectionString from imported connection pg.connectionString
+  pg.connect(connectionString, function pgSelect(err, client, done) {
+    // Handle connection errors
+    if (err) {
+      done();
+      console.log(err);
+    }
+
+    // SQL Query > Select Data
+    var query = client.query("SELECT * FROM " + table);
+
+    // Stream results back one row at a time
+    query.on('row', function(row) {
+      //push data to channels
+      row = row || row[property];
+      currentData.push(row[property]);
+    });
+
+    // After all data is returned, close connection and return results
+    query.on('end', function() {
+      done();
+      // return table data
+      return currentData;
+    });
+  });
+}
+
 function checkNewChannel(currentChannels, newChannels) {
   //check if old and new channel length is the same
   if (newChannels.length > currentChannels.length) {
@@ -197,6 +228,10 @@ function channelMsgs(currentChannels) {
   });
 }
 
+// module.exports = {
+//   getTableData: getTableData
+// };
+
 exports.populateDB = function populateDB() {
     // Channel Query
     slackRequest(channelListForm, function(body) {
@@ -220,3 +255,4 @@ exports.populateDB = function populateDB() {
       getCurrentData(channelMsgs, null, 'channels', 'slack_channel_id');
     }, 1500);
 };
+
