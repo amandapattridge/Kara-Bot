@@ -34,8 +34,10 @@ Slash commands must be used exactly as written
 **GitHub API**
 
 - **/repos** - show all repos in your organization
-- **/watch** [repo name] - KaraBot will watch the specified repo and alert you when a pull request is created, updates or merged
-- **/unwatch** [repo name] - KaraBot will stop watching the specified repo
+- **show repos** or **show [number] repos** - show all or a specified number of repos in your organization
+- **watch [number]** or **watch [owner/repo]** - KaraBot will watch the specified repo and alert you when a pull request is created, updates or merged
+- **unwatch [number]** or **unwatch [owner/repo]** 
+  - (repo number are available from show repos)
 
 ### JIRA
 **JIRA API**
